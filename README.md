@@ -1,7 +1,7 @@
 ColorSelector
 ===
 
-A SwiftUI color picker component library for macOS
+A SwiftUI color picker component library for macOS, designed to replace the default ColorPicker component.
 
 ![ColorSelector for macOS](https://github.com/user-attachments/assets/aab49a01-6c3d-40e7-86c2-4013f2b8cc8d)
 
