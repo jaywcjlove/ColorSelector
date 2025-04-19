@@ -27,22 +27,20 @@ public let defaultSwatchColors: [NSColor] = [
 ]
 
 public struct Swatch: View {
+    @Environment(\.swatchColors) private var swatchColors
     @State private var width: CGFloat = 0
     var nsColor: NSColor? = NSColor.clear
-    var colors: [NSColor] = defaultSwatchColors
     var size: CGSize = .init(width: 14, height: 14)
     var spacing: CGFloat = 4 // 间距，从原始代码提取
     var onColorSelected: ((NSColor) -> Void)?
     public init(
         nsColor: NSColor? = NSColor.clear,
-        colors: [NSColor] = defaultSwatchColors,
         size: CGSize = .init(width: 14, height: 14),
         spacing: CGFloat = 4,
         onColorSelected: ((NSColor) -> Void)? = nil
     ) {
         self.width = width
         self.nsColor = nsColor
-        self.colors = colors
         self.size = size
         self.spacing = spacing
         self.onColorSelected = onColorSelected
@@ -61,7 +59,7 @@ public struct Swatch: View {
                 columns: makeGridItems(for: width),
                 spacing: spacing
             ) {
-                ForEach(colors, id: \.self) { item in
+                ForEach(swatchColors, id: \.self) { item in
                     Button(action: {
                         onColorSelected?(item)
                     }, label: {
@@ -121,16 +119,11 @@ struct WidthPreferenceKey: @preconcurrency PreferenceKey {
         Swatch(nsColor: color) { value in
             color = value
         }
-//        Swatch(colors: [
-//            Color(red: 0.878, green: 0.125, blue: 0.129),
-//            Color(red: 0.984, green: 0.388, blue: 0.000),
-//            Color(red: 0.965, green: 0.706, blue: 0.000),
-//            Color(red: 0.424, green: 0.835, blue: 0.008),
-//            Color(red: 0.267, green: 0.847, blue: 0.710),
-//            Color(red: 0.200, green: 0.773, blue: 1.000),
-//            Color(red: 0.000, green: 0.569, blue: 0.996),
-//            Color.white,
-//        ])
+        .environment(\.swatchColors, [
+            NSColor(hue: 0.999, saturation: 0.857, brightness: 0.878, alpha: 1.0),
+            NSColor(hue: 0.066, saturation: 1.000, brightness: 0.980, alpha: 1.0),
+            NSColor(hue: 0.121, saturation: 0.976, brightness: 0.969, alpha: 1.0),
+        ])
     }
     .frame(width: 160)
     .padding()

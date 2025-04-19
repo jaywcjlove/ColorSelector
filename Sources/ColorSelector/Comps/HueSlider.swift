@@ -9,17 +9,11 @@ import SwiftUI
 
 // Hue Slider 视图
 public struct HueSlider: View {
+    @Environment(\.pointSize) private var pointSize
+    @Environment(\.cornerSize) private var cornerRadius
     @Binding var hue: CGFloat // 色相 (0.0 到 1.0)
-    var cornerRadius: CGFloat = 6
-    var pointSize: CGSize = .init(width: 8, height: 8)
-    public init(
-        hue: Binding<CGFloat>,
-        cornerRadius: CGFloat = 6,
-        pointSize: CGSize = .init(width: 8, height: 8)
-    ) {
+    public init(hue: Binding<CGFloat>) {
         self._hue = hue
-        self.cornerRadius = cornerRadius
-        self.pointSize = pointSize
     }
     public var body: some View {
         GeometryReader { geometry in

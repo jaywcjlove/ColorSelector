@@ -8,28 +8,24 @@
 import SwiftUI
 
 public struct Saturation: View {
+    @Environment(\.pointSize) private var pointSize
+    @Environment(\.cornerSize) private var cornerSize
     @Binding var saturation: CGFloat // 饱和度 (0.0 到 1.0)
     @Binding var brightness: CGFloat // 亮度 (0.0 到 1.0)
     var hue: CGFloat // 固定的色相 (0.0 到 1.0)
-    var cornerRadius: CGFloat = 6
-    var pointSize: CGSize = .init(width: 8, height: 8)
     public init(
         saturation: Binding<CGFloat>,
         brightness: Binding<CGFloat>,
-        hue: CGFloat = 0,
-        cornerRadius: CGFloat = 6,
-        pointSize: CGSize = .init(width: 8, height: 8)
+        hue: CGFloat = 0
     ) {
         self._saturation = saturation
         self._brightness = brightness
         self.hue = hue
-        self.cornerRadius = cornerRadius
-        self.pointSize = pointSize
     }
     public var body: some View {
         GeometryReader { geometry in
             ZStack {
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                RoundedRectangle(cornerRadius: cornerSize, style: .continuous)
                     .fill(
                         LinearGradient(
                             gradient: Gradient(colors: [
@@ -41,7 +37,7 @@ public struct Saturation: View {
                         )
                     )
                     .overlay(
-                        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                        RoundedRectangle(cornerRadius: cornerSize, style: .continuous)
                             .stroke(Color.secondary.opacity(0.26), lineWidth: 2)
                     )
                     .overlay(
@@ -56,7 +52,7 @@ public struct Saturation: View {
                         )
                         .blendMode(.multiply)
                         //.clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-                        .mask(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+                        .mask(RoundedRectangle(cornerRadius: cornerSize, style: .continuous))
                     )
                 // 显示当前选择的颜色指示器
                 Circle()
@@ -102,8 +98,7 @@ public struct Saturation: View {
     Saturation(
         saturation: $saturation,
         brightness: $brightness,
-        hue: hue,
-        cornerRadius: 16
+        hue: hue
     )
     .frame(width: 200, height: 120)
     .padding()

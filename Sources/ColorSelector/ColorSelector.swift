@@ -4,20 +4,13 @@
 import SwiftUI
 
 public struct ColorSelector: View {
+    @Environment(\.pointSize) private var pointSize
+    @Environment(\.cornerSize) private var cornerSize
     @Binding var selection: Color
     @State private var popover: Bool = false
     var title: LocalizedStringKey?
-    var cornerRadius: CGFloat = 6
-    var pointSize: CGSize = .init(width: 8, height: 8)
-    public init(
-        _ title: LocalizedStringKey? = nil,
-        selection: Binding<Color>,
-        cornerRadius: CGFloat = 6,
-        pointSize: CGSize = .init(width: 8, height: 8)
-    ) {
+    public init(_ title: LocalizedStringKey? = nil, selection: Binding<Color>) {
         self.title = title
-        self.cornerRadius = cornerRadius
-        self.pointSize = pointSize
         self._selection = selection
     }
     
@@ -73,9 +66,7 @@ public struct ColorSelector: View {
                         hue: $hue,
                         saturation: $saturation,
                         brightness: $brightness,
-                        alpha: $alpha,
-                        cornerRadius: cornerRadius,
-                        pointSize: pointSize
+                        alpha: $alpha
                     )
                     .onChange(of: hue, initial: false, { old, val in
                         changeColor()

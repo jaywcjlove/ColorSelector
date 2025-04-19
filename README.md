@@ -48,6 +48,38 @@ struct ContentView: View {
 }
 ```
 
+Using the `swatchColors` environment value, developers can customize the color list in the color selector, replacing the default color options.
+
+```swift
+struct ContentView: View {
+    @State var color: Color = .red
+    
+    var body: some View {
+        ColorSelector(selection: $color)
+            .environment(\.swatchColors, [
+                NSColor(hue: 0.999, saturation: 0.857, brightness: 0.878, alpha: 1.0),
+                NSColor(hue: 0.066, saturation: 1.000, brightness: 0.980, alpha: 1.0),
+                NSColor(hue: 0.121, saturation: 0.976, brightness: 0.969, alpha: 1.0),
+            ])
+    }
+}
+```
+
+By setting the `cornerSize` (corner radius) and `pointSize` (point size) environment values, the corner radius and point size can be dynamically adjusted.
+
+```swift
+struct ContentView: View {
+    @State var cornerRadius: CGFloat = 6
+    @State var pointSize: CGSize = .init(width: 12, height: 12)
+    
+    var body: some View {
+        ColorSelector(selection: $color)
+            .environment(\.cornerSize, cornerRadius)
+            .environment(\.pointSize, pointSize)
+    }
+}
+```
+
 ### AlphaSlider
 
 ```swift

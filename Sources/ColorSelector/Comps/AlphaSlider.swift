@@ -8,33 +8,28 @@
 import SwiftUI
 
 public struct AlphaSlider: View {
+    @Environment(\.pointSize) private var pointSize
+    @Environment(\.cornerSize) private var cornerSize
     @Binding var alpha: CGFloat // 透明度 (0.0 到 1.0)
     var hue: CGFloat // 色相，用于显示渐变颜色
     var saturation: CGFloat // 饱和度，用于显示渐变颜色
     var brightness: CGFloat // 亮度，用于显示渐变颜色
-    var cornerRadius: CGFloat = 6
-    
-    var pointSize: CGSize = .init(width: 8, height: 8)
     public init(
         alpha: Binding<CGFloat>,
         hue: CGFloat = 0,
         saturation: CGFloat = 1,
         brightness: CGFloat = 1,
-        cornerRadius: CGFloat = 6,
-        pointSize: CGSize = .init(width: 8, height: 8)
     ) {
         self._alpha = alpha
         self.hue = hue
         self.saturation = saturation
         self.brightness = brightness
-        self.cornerRadius = cornerRadius
-        self.pointSize = pointSize
     }
     public var body: some View {
         GeometryReader { geometry in
             ZStack {
                 // 透明度渐变条
-                RoundedRectangle(cornerRadius: cornerRadius)
+                RoundedRectangle(cornerRadius: cornerSize)
                     .fill(
                         LinearGradient(
                             gradient: Gradient(colors: [
@@ -45,21 +40,21 @@ public struct AlphaSlider: View {
                             endPoint: .trailing
                         )
                     )
-                    .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.secondary.opacity(0.37), lineWidth: 2))
+                    .overlay(RoundedRectangle(cornerRadius: cornerSize).stroke(Color.secondary.opacity(0.37), lineWidth: 2))
                     .background(
                         // 添加棋盘格背景，增强透明效果
                         CheckerboardBackground(squareSize: pointSize.height / 2)
-                            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                            .clipShape(RoundedRectangle(cornerRadius: cornerSize))
                             .opacity(0.45)
                     )
-                    .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                    .clipShape(RoundedRectangle(cornerRadius: cornerSize))
 
                 // 指示器
                 Circle()
                     .fill(Color(hue: hue, saturation: saturation, brightness: brightness, opacity: alpha))
                     .background(
                         CheckerboardBackground(squareSize: pointSize.height / 2)
-                            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                            .clipShape(RoundedRectangle(cornerRadius: cornerSize))
                     )
                     .frame(width: pointSize.width, height: pointSize.height)
                     .overlay(Circle().stroke(Color.secondary.opacity(0.37), lineWidth: 4))
@@ -113,6 +108,11 @@ struct CheckerboardBackground: View {
     @Previewable @State var hue: CGFloat = 0.0
     @Previewable @State var alpha: CGFloat = 1.0
     Text("\(alpha)")
-    AlphaSlider(alpha: $alpha, hue: hue, saturation: saturation, brightness: brightness)
-        .padding()
+    AlphaSlider(
+        alpha: $alpha,
+        hue: hue,
+        saturation: saturation,
+        brightness: brightness
+    )
+    .padding()
 }

@@ -8,19 +8,12 @@
 import SwiftUI
 
 public struct ColorSampler: View {
+    @Environment(\.pointSize) private var pointSize
+    @Environment(\.cornerSize) private var cornerSize
     @Binding var color: Color
-    var cornerRadius: CGFloat = 6
-    var pointSize: CGSize = .init(width: 8, height: 8)
     var onColorSampler: ((NSColor) -> Void)?
-    public init(
-        color: Binding<Color>,
-        cornerRadius: CGFloat = 6,
-        pointSize: CGSize = .init(width: 8, height: 8),
-        onColorSampler: ((NSColor) -> Void)? = nil
-    ) {
+    public init(color: Binding<Color>, onColorSampler: ((NSColor) -> Void)? = nil) {
         self._color = color
-        self.cornerRadius = cornerRadius
-        self.pointSize = pointSize
         self.onColorSampler = onColorSampler
     }
     public var body: some View {
@@ -36,15 +29,15 @@ public struct ColorSampler: View {
                 color
                     .frame(width: size, height: size)
                     .clipShape(
-                        RoundedRectangle(cornerRadius: cornerRadius * 0.6)
+                        RoundedRectangle(cornerRadius: cornerSize * 0.6)
                     )
                     .overlay(
-                        RoundedRectangle(cornerRadius: cornerRadius * 0.6)
+                        RoundedRectangle(cornerRadius: cornerSize * 0.6)
                             .stroke(Color.secondary.opacity(0.46), lineWidth: 1)
                     )
                     .background(
                         CheckerboardBackground(squareSize: pointSize.height / 2)
-                            .clipShape(RoundedRectangle(cornerRadius: cornerRadius * 0.6))
+                            .clipShape(RoundedRectangle(cornerRadius: cornerSize * 0.6))
                             .opacity(0.25)
                     )
                 
@@ -58,12 +51,10 @@ public struct ColorSampler: View {
 
 #Preview {
     @Previewable @State var color: Color = Color.red
-    @Previewable @State var cornerRadius: CGFloat = 6
-    @Previewable @State var pointSize: CGSize = .init(width: 8, height: 8)
-    ColorSampler(
-        color: $color,
-        cornerRadius: cornerRadius,
-        pointSize: pointSize
-    )
+    VStack {
+        ColorSampler(color: $color)
+//            .cornerSize(6)
+//            .pointSize(CGSize(width: 8, height: 8))
+    }
     .padding()
 }
