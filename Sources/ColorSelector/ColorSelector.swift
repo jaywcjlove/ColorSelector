@@ -82,6 +82,12 @@ public struct ColorSelector: View {
                     })
                 }
                 .frame(width: 180, height: 250)
+                .onAppear() {
+                    hue = selection.hue
+                    saturation = selection.saturation
+                    brightness = selection.brightness
+                    alpha = selection.alpha
+                }
             }
         }
     }
@@ -92,7 +98,7 @@ public struct ColorSelector: View {
 
 
 #Preview {
-    @Previewable @State var color: Color = .red
+    @Previewable @State var color: Color = Color.blue
     @Previewable @State var colorClear: Color = .clear
     ColorSelector("Color", selection: $color).padding()
     ColorSelector(selection: $colorClear).padding()

@@ -9,37 +9,36 @@ import AppKit
 import SwiftUICore
 
 extension Color {
+    var toNSColor: NSColor? {
+        let cgColor = NSColor(self).cgColor
+        return NSColor(cgColor: cgColor)
+    }
     var alpha: CGFloat {
-        guard let cgColor = self.cgColor else { return 0 }
-        let nsColor = NSColor(cgColor: cgColor)
+        let nsColor = self.toNSColor
         var value: CGFloat = 1
         nsColor?.getHue(nil, saturation: nil, brightness: nil, alpha: &value)
         return value
     }
     var hue: CGFloat {
-        guard let cgColor = self.cgColor else { return 0 }
-        let nsColor = NSColor(cgColor: cgColor)
+        let nsColor = self.toNSColor
         var value: CGFloat = 0
         nsColor?.getHue(&value, saturation: nil, brightness: nil, alpha: nil)
         return value
     }
     var saturation: CGFloat {
-        guard let cgColor = self.cgColor else { return 0 }
-        let nsColor = NSColor(cgColor: cgColor)
+        let nsColor = self.toNSColor
         var value: CGFloat = 0
         nsColor?.getHue(nil, saturation: &value, brightness: nil, alpha: nil)
         return value
     }
     var brightness: CGFloat {
-        guard let cgColor = self.cgColor else { return 0 }
-        let nsColor = NSColor(cgColor: cgColor)
+        let nsColor = self.toNSColor
         var value: CGFloat = 0
         nsColor?.getHue(nil, saturation: nil, brightness: &value, alpha: nil)
         return value
     }
     func contrastingColor(lightColor: NSColor = .white, darkColor: NSColor = .black, threshold: CGFloat = 0.5) -> Color? {
-        guard let cgColor = self.cgColor else { return nil }
-        let nsColor = NSColor(cgColor: cgColor)
+        let nsColor = self.toNSColor
         guard let nsColor = nsColor?.contrastingColor(lightColor: lightColor, darkColor: darkColor, threshold: threshold) else { return nil }
         return Color(nsColor: nsColor)
     }
