@@ -42,8 +42,122 @@ struct ContentView: View {
     @State var colorClear: Color = .clear
     
     var body: some View {
-        ColorSelector("Color", selection: $color).padding()
-        ColorSelector(selection: $colorClear).padding()
+        ColorSelector("Color", selection: $color)
+        ColorSelector(selection: $colorClear)
     }
 }
 ```
+
+### AlphaSlider
+
+```swift
+struct ContentView: View {
+    @State var alpha: CGFloat = 1.0
+    var saturation: CGFloat = 1.0
+    var brightness: CGFloat = 1.0
+    var hue: CGFloat = 0.0
+    
+    var body: some View {
+        AlphaSlider(
+            alpha: $alpha,
+            hue: hue,
+            saturation: saturation,
+            brightness: brightness
+        )
+    }
+}
+```
+
+### ColorSampler
+
+```swift
+struct ContentView: View {
+    @State var color: Color = Color.red
+    var cornerRadius: CGFloat = 6
+    var pointSize: CGSize = .init(width: 8, height: 8)
+    
+    var body: some View {
+        ColorSampler(
+            color: $color,
+            cornerRadius: cornerRadius,
+            pointSize: pointSize
+        )
+    }
+}
+```
+
+### HueSlider
+
+```swift
+struct ContentView: View {
+    @State var hue: CGFloat = 1
+    
+    var body: some View {
+        HueSlider(hue: $hue)
+    }
+}
+```
+
+### Saturation
+
+```swift
+struct ContentView: View {
+    @State var saturation: CGFloat = 1.0
+    @State var brightness: CGFloat = 1.0
+    var hue: CGFloat = 0.0
+    
+    var body: some View {
+        Saturation(
+            saturation: $saturation,
+            brightness: $brightness,
+            hue: hue,
+            cornerRadius: 16
+        )
+    }
+}
+```
+
+### Swatch
+
+```swift
+struct ContentView: View {
+    @State var color: NSColor = NSColor.white
+    
+    var body: some View {
+        Swatch()
+        Swatch(nsColor: color) { value in
+            color = value
+        }
+    }
+}
+```
+
+### Sketch
+
+```swift
+struct ContentView: View {
+    @State var saturation: CGFloat = 1.0
+    @State var brightness: CGFloat = 1.0
+    @State var hue: CGFloat = 0.0
+    @State var alpha: CGFloat = 1.0
+    
+    var cornerRadius: CGFloat = 6
+    var pointSize: CGSize = .init(width: 8, height: 8)
+    
+    var body: some View {
+        Sketch(
+            hue: $hue,
+            saturation: $saturation,
+            brightness: $brightness,
+            alpha: $alpha,
+            cornerRadius: cornerRadius,
+            pointSize: pointSize
+        )
+        .frame(width: 180, height: 230)
+    }
+}
+```
+
+## License
+
+Licensed under the MIT License.

@@ -89,7 +89,6 @@ public struct Sketch: View {
                 saturation = value.saturationComponent
                 brightness = value.brightnessComponent
                 alpha = value.alphaComponent
-                print("~~~", hue, saturation, brightness, alpha)
             }
         }
         .padding(12)
