@@ -6,11 +6,11 @@ import SwiftUI
 public struct ColorSelector: View {
     @Environment(\.pointSize) private var pointSize
     @Environment(\.cornerSize) private var cornerSize
-    @Binding var selection: Color
+    @Binding var selection: Color?
     @State private var popover: Bool = false
     var title: LocalizedStringKey?
     var arrowEdge: Edge? = nil
-    public init(_ title: LocalizedStringKey? = nil, selection: Binding<Color>, arrowEdge: Edge? = nil) {
+    public init(_ title: LocalizedStringKey? = nil, selection: Binding<Color?>, arrowEdge: Edge? = nil) {
         self.title = title
         self.arrowEdge = arrowEdge
         self._selection = selection
@@ -31,7 +31,7 @@ public struct ColorSelector: View {
                 popover = true
             }, label: {
                 ZStack {
-                    if selection != .clear {
+                    if let selection, selection != .clear {
                         RoundedRectangle(cornerRadius: 2, style: .continuous)
                             .fill(selection)
                             .frame(width: 38, height: 17)
@@ -88,6 +88,7 @@ public struct ColorSelector: View {
                 }
                 .frame(width: 180, height: 250)
                 .onAppear() {
+                    let selection = selection ?? Color.clear
                     hue = selection.hue
                     saturation = selection.saturation
                     brightness = selection.brightness
@@ -103,8 +104,8 @@ public struct ColorSelector: View {
 
 
 #Preview {
-    @Previewable @State var color: Color = Color.blue
-    @Previewable @State var colorClear: Color = .clear
+    @Previewable @State var color: Color? = Color.blue
+    @Previewable @State var colorClear: Color? = .clear
     ColorSelector("Color", selection: $color).padding()
     ColorSelector(selection: $colorClear).padding()
     ColorSelector(selection: $colorClear, arrowEdge: .top).padding()

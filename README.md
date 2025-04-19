@@ -38,8 +38,8 @@ A SwiftUI color picker component library for macOS, designed to replace the defa
 import ColorSelector
 
 struct ContentView: View {
-    @State var color: Color = .red
-    @State var colorClear: Color = .clear
+    @State var color: Color? = .red
+    @State var colorClear: Color? = .clear
     
     var body: some View {
         ColorSelector("Color", selection: $color)
@@ -52,7 +52,7 @@ Using the `swatchColors` environment value, developers can customize the color l
 
 ```swift
 struct ContentView: View {
-    @State var color: Color = .red
+    @State var color: Color? = .red
     
     var body: some View {
         ColorSelector(selection: $color)
@@ -71,6 +71,7 @@ By setting the `cornerSize` (corner radius) and `pointSize` (point size) environ
 
 ```swift
 struct ContentView: View {
+    @State var color: Color? = .red
     @State var cornerRadius: CGFloat = 6
     @State var pointSize: CGSize = .init(width: 12, height: 12)
     
@@ -88,7 +89,7 @@ struct ContentView: View {
 import ColorSelector
 
 struct ContentView: View {
-    @State var colorClear: Color = .clear
+    @State var colorClear: Color? = .clear
     
     var body: some View {
         ColorSelector(selection: $colorClear, arrowEdge: .bottom)
