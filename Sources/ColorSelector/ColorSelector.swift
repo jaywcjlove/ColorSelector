@@ -23,7 +23,10 @@ public struct ColorSelector: View {
     
     public var body: some View {
         HStack {
-            if let title { Text(title) }
+            if let title {
+                Text(title)
+                Spacer()
+            }
             Button(action: {
                 popover = true
             }, label: {
