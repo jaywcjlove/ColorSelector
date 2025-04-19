@@ -61,6 +61,8 @@ struct ContentView: View {
                 NSColor(hue: 0.066, saturation: 1.000, brightness: 0.980, alpha: 1.0),
                 NSColor(hue: 0.121, saturation: 0.976, brightness: 0.969, alpha: 1.0),
             ])
+        ///     
+        ColorSelector(selection: $colorClear, arrowEdge: .top)
     }
 }
 ```
@@ -76,6 +78,20 @@ struct ContentView: View {
         ColorSelector(selection: $color)
             .environment(\.cornerSize, cornerRadius)
             .environment(\.pointSize, pointSize)
+    }
+}
+```
+
+**arrowEdge**: The edge of the attachmentAnchor that defines the location of the popover’s arrow. The default is nil, which results in the system allowing any arrow edge.
+
+```swift
+import ColorSelector
+
+struct ContentView: View {
+    @State var colorClear: Color = .clear
+    
+    var body: some View {
+        ColorSelector(selection: $colorClear, arrowEdge: .bottom)
     }
 }
 ```

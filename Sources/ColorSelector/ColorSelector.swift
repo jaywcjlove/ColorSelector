@@ -9,8 +9,10 @@ public struct ColorSelector: View {
     @Binding var selection: Color
     @State private var popover: Bool = false
     var title: LocalizedStringKey?
-    public init(_ title: LocalizedStringKey? = nil, selection: Binding<Color>) {
+    var arrowEdge: Edge? = nil
+    public init(_ title: LocalizedStringKey? = nil, selection: Binding<Color>, arrowEdge: Edge? = nil) {
         self.title = title
+        self.arrowEdge = arrowEdge
         self._selection = selection
     }
     
@@ -59,7 +61,7 @@ public struct ColorSelector: View {
                 }
             })
             .frame(width: 44, height: 23)
-            .popover(isPresented: $popover, arrowEdge: .bottom) {
+            .popover(isPresented: $popover, arrowEdge: arrowEdge) {
                 ZStack {
                     Color(nsColor: NSColor.windowBackgroundColor).scaleEffect(1.5)
                     Sketch(
@@ -102,6 +104,7 @@ public struct ColorSelector: View {
     @Previewable @State var colorClear: Color = .clear
     ColorSelector("Color", selection: $color).padding()
     ColorSelector(selection: $colorClear).padding()
+    ColorSelector(selection: $colorClear, arrowEdge: .top).padding()
     
     color.frame(width: 60, height: 30)
 }
