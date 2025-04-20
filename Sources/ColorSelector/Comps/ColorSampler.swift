@@ -52,13 +52,13 @@ public struct ColorSampler: View {
         .buttonStyle(.plain)
     }
     
-    public func rectSize(_ value: CGFloat) -> some View {
+    public func rectSize(_ value: CGFloat) -> ColorSampler {
         viewModel.size = value
-        return self
+        return self as ColorSampler
     }
-    public func rectSize(_ value: Binding<CGFloat>) -> some View {
+    public func rectSize(_ value: Binding<CGFloat>) -> ColorSampler {
         viewModel.size = value.wrappedValue
-        return self
+        return self as ColorSampler
     }
 }
 
