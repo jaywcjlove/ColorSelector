@@ -152,8 +152,9 @@ struct ContentView: View {
 
 You can customize the width and height of the rectangle using the `rectSize` modifier.
 
-```
+```swift
 #Preview {
+    @Previewable @State var color: Color? = Color.blue
     ColorSampler(color: $color)
         .rectSize(23)
 }
