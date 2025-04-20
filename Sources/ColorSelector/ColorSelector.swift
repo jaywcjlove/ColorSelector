@@ -6,7 +6,6 @@ import SwiftUI
 public struct ColorSelector: View {
     @ObservedObject var viewModel: SketchViewModel = .init()
     @Environment(\.pointSize) private var pointSize
-    @Environment(\.cornerSize) private var cornerSize
     @Binding var selection: Color?
     @State private var popover: Bool = false
     var title: LocalizedStringKey?
@@ -40,7 +39,7 @@ public struct ColorSelector: View {
                                 RoundedRectangle(cornerRadius: 2.5, style: .continuous).stroke(lineWidth: 1).opacity(0.25)
                             )
                             .background(
-                                    CheckerboardBackground(squareSize: pointSize.height / 2)
+                                    CheckerboardBackground(squareSize: 5)
                                         .opacity(0.25)
                             )
                             .mask(RoundedRectangle(cornerRadius: 2.5, style: .continuous))
@@ -103,13 +102,13 @@ public struct ColorSelector: View {
         selection = Color(hue: hue, saturation: saturation, brightness: brightness, opacity: alpha)
     }
     
-    public func showsAlpha(_ value: Bool) -> some View {
+    public func showsAlpha(_ value: Bool) -> ColorSelector {
         viewModel.showsAlpha = value
-        return self
+        return self as ColorSelector
     }
-    public func showsAlpha(_ value: Binding<Bool>) -> some View {
+    public func showsAlpha(_ value: Binding<Bool>) -> ColorSelector {
         viewModel.showsAlpha = value.wrappedValue
-        return self
+        return self as ColorSelector
     }
 }
 
