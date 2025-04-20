@@ -97,6 +97,21 @@ struct ContentView: View {
 }
 ```
 
+Use the `showsAlpha` modifier to control the visibility of the alpha (opacity) slider in the picker panel.
+
+```swift
+import ColorSelector
+
+struct ContentView: View {
+    @State var color: Color? = .clear
+    
+    var body: some View {
+        ColorSelector(selection: $color)
+            .showsAlpha(false)
+    }
+}
+```   
+
 ### AlphaSlider
 
 ```swift
@@ -132,6 +147,15 @@ struct ContentView: View {
             pointSize: pointSize
         )
     }
+}
+```
+
+You can customize the width and height of the rectangle using the `rectSize` modifier.
+
+```
+#Preview {
+    ColorSampler(color: $color)
+        .rectSize(23)
 }
 ```
 
@@ -190,17 +214,12 @@ struct ContentView: View {
     @State var hue: CGFloat = 0.0
     @State var alpha: CGFloat = 1.0
     
-    var cornerRadius: CGFloat = 6
-    var pointSize: CGSize = .init(width: 8, height: 8)
-    
     var body: some View {
         Sketch(
             hue: $hue,
             saturation: $saturation,
             brightness: $brightness,
-            alpha: $alpha,
-            cornerRadius: cornerRadius,
-            pointSize: pointSize
+            alpha: $alpha
         )
         .frame(width: 180, height: 230)
     }

@@ -7,7 +7,13 @@
 
 import SwiftUI
 
+class SketchViewModel: ObservableObject {
+    @Published var showsAlpha: Bool = true
+}
+
 public struct Sketch: View {
+    @ObservedObject var viewModel: SketchViewModel = .init()
+    @Environment(\.pointSize) private var pointSize
     @Binding var hue: CGFloat // 固定的色相 (0.0 到 1.0)
     @Binding var saturation: CGFloat // 饱和度 (0.0 到 1.0)
     @Binding var brightness: CGFloat // 亮度 (0.0 到 1.0)
@@ -34,12 +40,14 @@ public struct Sketch: View {
             HStack {
                 VStack {
                     HueSlider(hue: $hue)
-                    AlphaSlider(
-                        alpha: $alpha,
-                        hue: hue,
-                        saturation: saturation,
-                        brightness: brightness
-                    )
+                    if viewModel.showsAlpha == true {
+                        AlphaSlider(
+                            alpha: $alpha,
+                            hue: hue,
+                            saturation: saturation,
+                            brightness: brightness
+                        )
+                    }
                 }
                 let color = Color(
                     hue: hue,
@@ -53,12 +61,14 @@ public struct Sketch: View {
                     brightness = value.brightness
                     alpha = value.alpha
                 })
+                let rectSize: CGFloat = pointSize.height * 2 + 6
                 ColorSampler(color: bind) { value in
                     hue = value.hueComponent
                     saturation = value.saturationComponent
                     brightness = value.brightnessComponent
                     alpha = value.alphaComponent
                 }
+                .rectSize(viewModel.showsAlpha == true ? rectSize : pointSize.height)
             }
             let nsColor = NSColor(
                 hue: hue,
@@ -74,6 +84,14 @@ public struct Sketch: View {
             }
         }
         .padding(12)
+    }
+    public func showsAlpha(_ value: Bool) -> some View {
+        viewModel.showsAlpha = value
+        return self
+    }
+    public func showsAlpha(_ value: Binding<Bool>) -> some View {
+        viewModel.showsAlpha = value.wrappedValue
+        return self
     }
 }
 
@@ -93,12 +111,35 @@ public struct Sketch: View {
             alpha: $alpha
         )
         .frame(width: 180, height: 230)
+        .environment(\.cornerSize, 3)
         Sketch(
             hue: $hue,
             saturation: $saturation,
             brightness: $brightness,
             alpha: $alpha
         )
+        .showsAlpha(false)
+        .environment(\.cornerSize, cornerRadius)
+        .environment(\.pointSize, pointSize)
+        .frame(width: 180, height: 230)
+    }
+    HStack {
+        Sketch(
+            hue: $hue,
+            saturation: $saturation,
+            brightness: $brightness,
+            alpha: $alpha
+        )
+        .showsAlpha(false)
+        .frame(width: 180, height: 230)
+        .environment(\.cornerSize, 3)
+        Sketch(
+            hue: $hue,
+            saturation: $saturation,
+            brightness: $brightness,
+            alpha: $alpha
+        )
+        .showsAlpha(false)
         .environment(\.cornerSize, cornerRadius)
         .environment(\.pointSize, pointSize)
         .frame(width: 180, height: 230)

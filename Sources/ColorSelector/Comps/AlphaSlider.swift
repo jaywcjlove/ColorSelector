@@ -43,7 +43,7 @@ public struct AlphaSlider: View {
                     .overlay(RoundedRectangle(cornerRadius: cornerSize).stroke(Color.secondary.opacity(0.37), lineWidth: 2))
                     .background(
                         // 添加棋盘格背景，增强透明效果
-                        CheckerboardBackground(squareSize: pointSize.height / 2)
+                        CheckerboardBackground(squareSize: 5)
                             .clipShape(RoundedRectangle(cornerRadius: cornerSize))
                             .opacity(0.45)
                     )
@@ -53,7 +53,7 @@ public struct AlphaSlider: View {
                 Circle()
                     .fill(Color(hue: hue, saturation: saturation, brightness: brightness, opacity: alpha))
                     .background(
-                        CheckerboardBackground(squareSize: pointSize.height / 2)
+                        CheckerboardBackground(squareSize: 5)
                             .clipShape(RoundedRectangle(cornerRadius: cornerSize))
                     )
                     .frame(width: pointSize.width, height: pointSize.height)

@@ -21,7 +21,7 @@ extension EnvironmentValues {
 
 
 private struct PointSizesKey: EnvironmentKey {
-    static let defaultValue: CGSize = .init(width: 8, height: 8)
+    static let defaultValue: CGSize = .init(width: 10, height: 10)
 }
 extension EnvironmentValues {
     var pointSize: CGSize {
@@ -32,7 +32,7 @@ extension EnvironmentValues {
 
 
 private struct CornerSizeKey: EnvironmentKey {
-    static let defaultValue: CGFloat = 6
+    static let defaultValue: CGFloat = 5
 }
 extension EnvironmentValues {
     var cornerSize: CGFloat {

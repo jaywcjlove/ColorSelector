@@ -4,6 +4,7 @@
 import SwiftUI
 
 public struct ColorSelector: View {
+    @ObservedObject var viewModel: SketchViewModel = .init()
     @Environment(\.pointSize) private var pointSize
     @Environment(\.cornerSize) private var cornerSize
     @Binding var selection: Color?
@@ -73,6 +74,7 @@ public struct ColorSelector: View {
                         brightness: $brightness,
                         alpha: $alpha
                     )
+                    .showsAlpha($viewModel.showsAlpha)
                     .onChange(of: hue, initial: false, { old, val in
                         changeColor()
                     })
@@ -97,8 +99,17 @@ public struct ColorSelector: View {
             }
         }
     }
-    func changeColor() {
+    private func changeColor() {
         selection = Color(hue: hue, saturation: saturation, brightness: brightness, opacity: alpha)
+    }
+    
+    public func showsAlpha(_ value: Bool) -> some View {
+        viewModel.showsAlpha = value
+        return self
+    }
+    public func showsAlpha(_ value: Binding<Bool>) -> some View {
+        viewModel.showsAlpha = value.wrappedValue
+        return self
     }
 }
 
@@ -106,8 +117,12 @@ public struct ColorSelector: View {
 #Preview {
     @Previewable @State var color: Color? = Color.blue
     @Previewable @State var colorClear: Color? = .clear
-    ColorSelector("Color", selection: $color).padding()
-    ColorSelector(selection: $colorClear).padding()
+    ColorSelector("Color", selection: $color)
+        .frame(width: 210)
+        .padding()
+    ColorSelector(selection: $color)
+        .showsAlpha(false)
+        .padding()
     ColorSelector(selection: $colorClear, arrowEdge: .top).padding()
     
     color.frame(width: 60, height: 30)
