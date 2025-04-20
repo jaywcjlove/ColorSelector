@@ -32,6 +32,13 @@ A SwiftUI color picker component library for macOS, designed to replace the defa
     <a target="_blank" href="https://wangchujiang.com/symbol-scribe/" title="Symbol Scribe for macOS"><img align="center" alt="Symbol Scribe" height="52" width="52" src="https://github.com/jaywcjlove/jaywcjlove/assets/1680273/c7249f05-fa70-4def-a1e9-571d5f171fc9"></a>
 </p>
 
+Welcome to download [DevTutor](https://apps.apple.com/app/devtutor/id6471227008), a cheat sheet app designed to help developers quickly build excellent applications using SwiftUI.
+
+<p>
+  <a target="_blank" href="https://apps.apple.com/app/devtutor/id6471227008" title="DevTutor for SwiftUI AppStore"><img alt="DevTutor for SwiftUI AppStore" src="https://jaywcjlove.github.io/sb/download/macos.svg" height="51">
+  </a>
+</p>
+
 ## Usage
 
 ```swift
