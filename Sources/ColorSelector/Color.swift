@@ -10,8 +10,8 @@ import SwiftUICore
 
 extension Color {
     var toNSColor: NSColor? {
-        let cgColor = NSColor(self).cgColor
-        return NSColor(cgColor: cgColor)
+        guard let cgColor = self.cgColor else { return nil }
+        return NSColor(cgColor: cgColor)?.usingColorSpace(.sRGB)
     }
     var alpha: CGFloat {
         let nsColor = self.toNSColor

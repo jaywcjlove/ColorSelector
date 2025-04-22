@@ -140,5 +140,11 @@ public struct ColorSelector: View {
         .padding()
     ColorSelector(selection: $colorClear, arrowEdge: .top).padding()
     ColorSelector(nsColor: $nsColor, arrowEdge: .top).padding()
-    color.frame(width: 60, height: 30)
+    HStack {
+        if let nsColor {
+            Color(nsColor: nsColor).frame(width: 60, height: 30)
+        }
+        color.frame(width: 60, height: 30)
+    }
+    .padding(.bottom)
 }
