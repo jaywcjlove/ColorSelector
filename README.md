@@ -47,10 +47,12 @@ import ColorSelector
 struct ContentView: View {
     @State var color: Color? = .red
     @State var colorClear: Color? = .clear
+    @State var nsColor: NSColor? = NSColor.red
     
     var body: some View {
         ColorSelector("Color", selection: $color)
         ColorSelector(selection: $colorClear)
+        ColorSelector(nsColor: $nsColor, arrowEdge: .top)
     }
 }
 ```

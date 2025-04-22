@@ -16,6 +16,20 @@ public struct ColorSelector: View {
         self._selection = selection
     }
     
+    public init(_ title: LocalizedStringKey? = nil, nsColor: Binding<NSColor?>, arrowEdge: Edge? = nil) {
+        self.title = title
+        self.arrowEdge = arrowEdge
+        self._selection = Binding<Color?> {
+            if let nsColor = nsColor.wrappedValue {
+                return Color(nsColor: nsColor)
+            } else {
+                return nil
+            }
+        } set: { newValue in
+            nsColor.wrappedValue = newValue?.toNSColor
+        }
+    }
+    
     @State private var saturation: CGFloat = 1.0
     @State private var brightness: CGFloat = 1.0
     @State private var hue: CGFloat = 0.0
@@ -116,6 +130,8 @@ public struct ColorSelector: View {
 #Preview {
     @Previewable @State var color: Color? = Color.blue
     @Previewable @State var colorClear: Color? = .clear
+    @Previewable @State var nsColor: NSColor? = NSColor.red
+    
     ColorSelector("Color", selection: $color)
         .frame(width: 210)
         .padding()
@@ -123,6 +139,6 @@ public struct ColorSelector: View {
         .showsAlpha(false)
         .padding()
     ColorSelector(selection: $colorClear, arrowEdge: .top).padding()
-    
+    ColorSelector(nsColor: $nsColor, arrowEdge: .top).padding()
     color.frame(width: 60, height: 30)
 }
