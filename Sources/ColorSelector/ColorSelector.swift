@@ -32,7 +32,7 @@ public struct ColorSelector<Title>: View where Title : View {
     var title: LocalizedStringKey?
     var arrowEdge: Edge? = nil
     var label: (() -> Title)?
-    public init(label: (() -> Title)? = nil, selection: Binding<Color?>, arrowEdge: Edge? = nil) {
+    public init(selection: Binding<Color?>, arrowEdge: Edge? = nil, label: (() -> Title)? = nil) {
         self.label = label
         self.arrowEdge = arrowEdge
         self._selection = selection
@@ -143,11 +143,11 @@ public struct ColorSelector<Title>: View where Title : View {
     @Previewable @State var colorClear: Color? = .clear
     @Previewable @State var nsColor: NSColor? = NSColor.red
     
-    ColorSelector(label: {
-        Text("Hello World")
-    }, selection: $color)
-        .frame(width: 210)
-        .padding()
+    ColorSelector(selection: $color) {
+        Text("Color Picker")
+    }
+    .frame(width: 210)
+    .padding()
     ColorSelector("Color", selection: $color)
         .frame(width: 210)
         .padding()

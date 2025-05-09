@@ -54,6 +54,9 @@ struct ContentView: View {
         ColorSelector("Color", selection: $color)
         ColorSelector(selection: $colorClear)
         ColorSelector(nsColor: $nsColor, arrowEdge: .top)
+        ColorSelector(selection: $color) {
+            Text("Color Picker")
+        }
     }
 }
 ```
