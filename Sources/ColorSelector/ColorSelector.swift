@@ -3,19 +3,12 @@
 
 import SwiftUI
 
-public struct ColorSelector: View {
-    @ObservedObject var viewModel: SketchViewModel = .init()
-    @Environment(\.pointSize) private var pointSize
-    @Binding var selection: Color?
-    @State private var popover: Bool = false
-    var title: LocalizedStringKey?
-    var arrowEdge: Edge? = nil
+public extension ColorSelector where Title == EmptyView {
     public init(_ title: LocalizedStringKey? = nil, selection: Binding<Color?>, arrowEdge: Edge? = nil) {
         self.title = title
         self.arrowEdge = arrowEdge
         self._selection = selection
     }
-    
     public init(_ title: LocalizedStringKey? = nil, nsColor: Binding<NSColor?>, arrowEdge: Edge? = nil) {
         self.title = title
         self.arrowEdge = arrowEdge
@@ -29,7 +22,21 @@ public struct ColorSelector: View {
             nsColor.wrappedValue = newValue?.toNSColor
         }
     }
-    
+}
+
+public struct ColorSelector<Title>: View where Title : View {
+    @ObservedObject var viewModel: SketchViewModel = .init()
+    @Environment(\.pointSize) private var pointSize
+    @Binding var selection: Color?
+    @State private var popover: Bool = false
+    var title: LocalizedStringKey?
+    var arrowEdge: Edge? = nil
+    var label: (() -> Title)?
+    public init(label: (() -> Title)? = nil, selection: Binding<Color?>, arrowEdge: Edge? = nil) {
+        self.label = label
+        self.arrowEdge = arrowEdge
+        self._selection = selection
+    }
     @State private var saturation: CGFloat = 1.0
     @State private var brightness: CGFloat = 1.0
     @State private var hue: CGFloat = 0.0
@@ -39,6 +46,10 @@ public struct ColorSelector: View {
         HStack {
             if let title {
                 Text(title)
+                Spacer()
+            }
+            if let label {
+                label()
                 Spacer()
             }
             Button(action: {
@@ -132,6 +143,11 @@ public struct ColorSelector: View {
     @Previewable @State var colorClear: Color? = .clear
     @Previewable @State var nsColor: NSColor? = NSColor.red
     
+    ColorSelector(label: {
+        Text("Hello World")
+    }, selection: $color)
+        .frame(width: 210)
+        .padding()
     ColorSelector("Color", selection: $color)
         .frame(width: 210)
         .padding()
