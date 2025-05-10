@@ -68,7 +68,7 @@ public struct ColorSelector<Title>: View where Title : View {
                             )
                             .mask(RoundedRectangle(cornerRadius: 2.5, style: .continuous))
                             .padding(.horizontal, viewModel.controlSize.horizontal)
-                            .padding([.top, .bottom], 2)
+                            .padding(.vertical, viewModel.controlSize.vertical)
                     } else {
                         RoundedRectangle(cornerRadius: 2, style: .continuous)
                             .fill(.white)
@@ -83,7 +83,7 @@ public struct ColorSelector<Title>: View where Title : View {
                                 }
                             )
                             .mask(RoundedRectangle(cornerRadius: 2.5, style: .continuous))
-                            .padding([.top, .bottom], 2)
+                            .padding(.vertical, viewModel.controlSize.vertical)
                             .padding(.horizontal, viewModel.controlSize.horizontal)
                     }
                 }
@@ -158,9 +158,19 @@ extension ControlSize {
         case .extraLarge: -4
         case .large: -4
         case .regular: -5
-        case .small: -2
-        case .mini: -2
-        default: -5
+        case .small: -4
+        case .mini: -3
+        default: -4
+        }
+    }
+    var vertical: CGFloat {
+        switch self {
+        case .extraLarge: 2
+        case .large: 2
+        case .regular: 2
+        case .small: 1
+        case .mini: 1
+        default: 1
         }
     }
 }
