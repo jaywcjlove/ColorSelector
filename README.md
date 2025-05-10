@@ -123,8 +123,14 @@ struct ContentView: View {
             .showsAlpha(false)
     }
 }
-```   
+```
 
+Customize button size using the `controlSize` modifier
+
+```swift
+ColorSelector(selection: $color)
+    .controlSize(.regular)
+```
 ### AlphaSlider
 
 ```swift

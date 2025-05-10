@@ -9,6 +9,7 @@ import SwiftUI
 
 class SketchViewModel: ObservableObject {
     @Published var showsAlpha: Bool = true
+    @Published var controlSize: ControlSize = .regular
 }
 
 public struct Sketch: View {

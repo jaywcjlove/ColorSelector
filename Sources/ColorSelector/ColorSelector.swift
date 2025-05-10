@@ -4,12 +4,12 @@
 import SwiftUI
 
 public extension ColorSelector where Title == EmptyView {
-    public init(_ title: LocalizedStringKey? = nil, selection: Binding<Color?>, arrowEdge: Edge? = nil) {
+    init(_ title: LocalizedStringKey? = nil, selection: Binding<Color?>, arrowEdge: Edge? = nil) {
         self.title = title
         self.arrowEdge = arrowEdge
         self._selection = selection
     }
-    public init(_ title: LocalizedStringKey? = nil, nsColor: Binding<NSColor?>, arrowEdge: Edge? = nil) {
+    init(_ title: LocalizedStringKey? = nil, nsColor: Binding<NSColor?>, arrowEdge: Edge? = nil) {
         self.title = title
         self.arrowEdge = arrowEdge
         self._selection = Binding<Color?> {
@@ -59,7 +59,6 @@ public struct ColorSelector<Title>: View where Title : View {
                     if let selection, selection != .clear {
                         RoundedRectangle(cornerRadius: 2, style: .continuous)
                             .fill(selection)
-                            .frame(width: 38, height: 17)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 2.5, style: .continuous).stroke(lineWidth: 1).opacity(0.25)
                             )
@@ -68,11 +67,11 @@ public struct ColorSelector<Title>: View where Title : View {
                                         .opacity(0.25)
                             )
                             .mask(RoundedRectangle(cornerRadius: 2.5, style: .continuous))
-                            .padding([.leading, .trailing], -5).padding([.top, .bottom], 2)
+                            .padding(.horizontal, viewModel.controlSize.horizontal)
+                            .padding([.top, .bottom], 2)
                     } else {
                         RoundedRectangle(cornerRadius: 2, style: .continuous)
                             .fill(.white)
-                            .frame(width: 38, height: 17)
                             .overlay(
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 2.5, style: .continuous)
@@ -84,11 +83,14 @@ public struct ColorSelector<Title>: View where Title : View {
                                 }
                             )
                             .mask(RoundedRectangle(cornerRadius: 2.5, style: .continuous))
-                            .padding([.leading, .trailing], -5).padding([.top, .bottom], 2)
+                            .padding([.top, .bottom], 2)
+                            .padding(.horizontal, viewModel.controlSize.horizontal)
                     }
                 }
+                .frame(maxHeight: .infinity)
             })
-            .frame(width: 44, height: 23)
+            .frame(width: viewModel.controlSize.colorButton.width, height: viewModel.controlSize.colorButton.height)
+            .controlSize(viewModel.controlSize)
             .popover(isPresented: $popover, arrowEdge: arrowEdge) {
                 ZStack {
                     Color(nsColor: NSColor.windowBackgroundColor).scaleEffect(1.5)
@@ -135,6 +137,32 @@ public struct ColorSelector<Title>: View where Title : View {
         viewModel.showsAlpha = value.wrappedValue
         return self as ColorSelector
     }
+    public func controlSize(_ value: ControlSize) -> ColorSelector {
+        viewModel.controlSize = value
+        return self as ColorSelector
+    }
+}
+
+extension ControlSize {
+    var colorButton: CGSize {
+        switch self {
+        case .extraLarge: .init(width: 44, height: 28)
+        case .large: .init(width: 44, height: 28)
+        case .small: .init(width: 30, height: 12)
+        case .mini: .init(width: 24, height: 12)
+        default: .init(width: 34, height: 28)
+        }
+    }
+    var horizontal: CGFloat {
+        switch self {
+        case .extraLarge: -4
+        case .large: -4
+        case .regular: -5
+        case .small: -2
+        case .mini: -2
+        default: -5
+        }
+    }
 }
 
 
@@ -151,9 +179,36 @@ public struct ColorSelector<Title>: View where Title : View {
     ColorSelector("Color", selection: $color)
         .frame(width: 210)
         .padding()
-    ColorSelector(selection: $color)
-        .showsAlpha(false)
-        .padding()
+    HStack {
+        Button("Button Size", action: {}).controlSize(.extraLarge)
+        ColorSelector(selection: $color)
+            .showsAlpha(false)
+            .controlSize(.extraLarge)
+    }
+    HStack {
+        Button("Button Size", action: {}).controlSize(.large)
+        ColorSelector(selection: $color)
+            .showsAlpha(false)
+            .controlSize(.large)
+    }
+    HStack {
+        Button("Button Size", action: {}).controlSize(.regular)
+        ColorSelector(selection: $color)
+            .showsAlpha(false)
+            .controlSize(.regular)
+    }
+    HStack {
+        Button("Button Size", action: {}).controlSize(.small)
+        ColorSelector(selection: $color)
+            .showsAlpha(false)
+            .controlSize(.small)
+    }
+    HStack {
+        Button("Button Size", action: {}).controlSize(.mini)
+        ColorSelector(selection: $color)
+            .showsAlpha(false)
+            .controlSize(.mini)
+    }
     ColorSelector(selection: $colorClear, arrowEdge: .top).padding()
     ColorSelector(nsColor: $nsColor, arrowEdge: .top).padding()
     HStack {
