@@ -24,6 +24,23 @@ public extension ColorSelector where Title == EmptyView {
     }
 }
 
+public extension ColorSelector {
+    init(_ title: LocalizedStringKey? = nil, nsColor: Binding<NSColor?>, arrowEdge: Edge? = nil, label: (() -> Title)? = nil) {
+        self.title = title
+        self.arrowEdge = arrowEdge
+        self.label = label?()
+        self._selection = Binding<Color?> {
+            if let nsColor = nsColor.wrappedValue {
+                return Color(nsColor: nsColor)
+            } else {
+                return nil
+            }
+        } set: { newValue in
+            nsColor.wrappedValue = newValue?.toNSColor
+        }
+    }
+}
+
 public struct ColorSelector<Title>: View where Title : View {
     @ObservedObject var viewModel: SketchViewModel = .init()
     @Environment(\.pointSize) private var pointSize
@@ -31,9 +48,9 @@ public struct ColorSelector<Title>: View where Title : View {
     @State private var popover: Bool = false
     var title: LocalizedStringKey?
     var arrowEdge: Edge? = nil
-    var label: (() -> Title)?
-    public init(selection: Binding<Color?>, arrowEdge: Edge? = nil, label: (() -> Title)? = nil) {
-        self.label = label
+    var label: Title?
+    public init(_ title: LocalizedStringKey? = nil, selection: Binding<Color?>, arrowEdge: Edge? = nil, label: (() -> Title)? = nil) {
+        self.label = label?()
         self.arrowEdge = arrowEdge
         self._selection = selection
     }
@@ -41,7 +58,7 @@ public struct ColorSelector<Title>: View where Title : View {
     @State private var brightness: CGFloat = 1.0
     @State private var hue: CGFloat = 0.0
     @State private var alpha: CGFloat = 1.0
-    
+
     public var body: some View {
         HStack {
             if let title {
@@ -49,7 +66,7 @@ public struct ColorSelector<Title>: View where Title : View {
                 Spacer()
             }
             if let label {
-                label()
+                label
                 Spacer()
             }
             Button(action: {
@@ -115,13 +132,13 @@ public struct ColorSelector<Title>: View where Title : View {
                     })
                 }
                 .frame(width: 180, height: 250)
-                .onAppear() {
-                    let selection = selection ?? Color.clear
-                    hue = selection.hue
-                    saturation = selection.saturation
-                    brightness = selection.brightness
-                    alpha = selection.alpha
-                }
+                 .onAppear() {
+                     let selection = selection ?? Color.clear
+                     hue = selection.hue
+                     saturation = selection.saturation
+                     brightness = selection.brightness
+                     alpha = selection.alpha
+                 }
             }
         }
     }
@@ -181,6 +198,10 @@ extension ControlSize {
     @Previewable @State var colorClear: Color? = .clear
     @Previewable @State var nsColor: NSColor? = NSColor.red
     
+    ColorSelector(nsColor: $nsColor) {
+        Text("Color Picker")
+    }
+    .frame(width: 210)
     ColorSelector(selection: $color) {
         Text("Color Picker")
     }
