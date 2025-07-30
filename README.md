@@ -135,6 +135,70 @@ Customize button size using the `controlSize` modifier
 ColorSelector(selection: $color)
     .controlSize(.regular)
 ```
+
+### ColorSelector Modifier
+
+The `colorSelectorPopover` modifier provides an easy way to add color picker functionality to any view. The modifier attaches a popover that shows when triggered externally.
+
+```swift
+struct ContentView: View {
+    @State private var backgroundColor: Color? = .blue
+    @State private var showColorPicker = false
+    
+    var body: some View {
+        Text("Background Color")
+            .padding()
+            .background(backgroundColor ?? .clear)
+            .onTapGesture {
+                showColorPicker = true
+            }
+            .colorSelectorPopover(
+                selection: $backgroundColor,
+                isPresented: $showColorPicker
+            )
+    }
+}
+```
+
+**Basic usage with external popover control:**
+
+```swift
+@State private var textColor: Color? = .primary
+@State private var showTextPicker = false
+
+Button("Choose Text Color") {
+    showTextPicker = true
+}
+.colorSelectorPopover(
+    selection: $textColor,
+    isPresented: $showTextPicker,
+    showsAlpha: false
+)
+```
+
+**Using NSColor binding:**
+
+```swift
+@State private var shadowColor: NSColor? = NSColor.gray
+@State private var showShadowPicker = false
+
+Text("Shadow Color")
+    .onTapGesture { showShadowPicker = true }
+    .colorSelectorPopover(
+        nsColor: $shadowColor,
+        isPresented: $showShadowPicker,
+        arrowEdge: .top
+    )
+```
+
+**Available parameters:**
+
+- `selection`: A binding to the selected Color
+- `nsColor`: A binding to the selected NSColor (alternative to selection)
+- `isPresented`: A binding to control popover visibility
+- `arrowEdge`: The edge where the popover arrow appears (default: system decides)
+- `showsAlpha`: Whether to show alpha controls (default: true)
+
 ### AlphaSlider
 
 ```swift

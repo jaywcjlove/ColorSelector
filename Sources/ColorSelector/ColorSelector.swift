@@ -69,45 +69,11 @@ public struct ColorSelector<Title>: View where Title : View {
                 label
                 Spacer()
             }
-            Button(action: {
-                popover = true
-            }, label: {
-                ZStack {
-                    if let selection, selection != .clear {
-                        RoundedRectangle(cornerRadius: 2, style: .continuous)
-                            .fill(selection)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 2.5, style: .continuous).stroke(lineWidth: 1).opacity(0.25)
-                            )
-                            .background(
-                                    CheckerboardBackground(squareSize: 5)
-                                        .opacity(0.25)
-                            )
-                            .mask(RoundedRectangle(cornerRadius: 2.5, style: .continuous))
-                            .padding(.horizontal, viewModel.controlSize.horizontal)
-                            .padding(.vertical, viewModel.controlSize.vertical)
-                    } else {
-                        RoundedRectangle(cornerRadius: 2, style: .continuous)
-                            .fill(.white)
-                            .overlay(
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 2.5, style: .continuous)
-                                        .stroke(lineWidth: 1) .opacity(0.25)
-                                    Rectangle()
-                                        .fill(.red)
-                                        .frame(height: 1)
-                                        .rotationEffect(Angle(degrees: -22))
-                                }
-                            )
-                            .mask(RoundedRectangle(cornerRadius: 2.5, style: .continuous))
-                            .padding(.vertical, viewModel.controlSize.vertical)
-                            .padding(.horizontal, viewModel.controlSize.horizontal)
-                    }
-                }
-                .frame(maxHeight: .infinity)
-            })
-            .frame(width: viewModel.controlSize.colorButton.width, height: viewModel.controlSize.colorButton.height)
-            .controlSize(viewModel.controlSize)
+            ColorSelectorButton(
+                popover: $popover,
+                selection: $selection,
+                controlSize: $viewModel.controlSize
+            )
             .popover(isPresented: $popover, arrowEdge: arrowEdge) {
                 ZStack {
                     Color(nsColor: NSColor.windowBackgroundColor).scaleEffect(1.5)
@@ -132,13 +98,13 @@ public struct ColorSelector<Title>: View where Title : View {
                     })
                 }
                 .frame(width: 180, height: 250)
-                 .onAppear() {
-                     let selection = selection ?? Color.clear
-                     hue = selection.hue
-                     saturation = selection.saturation
-                     brightness = selection.brightness
-                     alpha = selection.alpha
-                 }
+                .onAppear() {
+                    let selection = selection ?? Color.clear
+                    hue = selection.hue
+                    saturation = selection.saturation
+                    brightness = selection.brightness
+                    alpha = selection.alpha
+                }
             }
         }
     }
