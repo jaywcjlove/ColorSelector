@@ -199,6 +199,50 @@ Text("Shadow Color")
 - `arrowEdge`: The edge where the popover arrow appears (default: system decides)
 - `showsAlpha`: Whether to show alpha controls (default: true)
 
+### ColorSelectorButton
+
+The `ColorSelectorButton` is a standalone button component that displays the current selected color and can trigger a popover when tapped. This component provides the visual color representation without the popover functionality built-in.
+
+```swift
+struct ContentView: View {
+    @State private var selectedColor: Color? = .blue
+    @State private var showColorPicker = false
+    @State private var buttonSize: ControlSize = .regular
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            // Color selector button
+            ColorSelectorButton(
+                popover: $showColorPicker,
+                selection: $selectedColor,
+                controlSize: $buttonSize
+            )
+            
+            // Display current color
+            Text("Selected: \(selectedColor?.description ?? "None")")
+        }
+        .colorSelectorPopover(
+            selection: $selectedColor,
+            isPresented: $showColorPicker
+        )
+    }
+}
+```
+
+**Customize button size:**
+
+```swift
+@State private var buttonSize: ControlSize = .large
+
+ColorSelectorButton(
+    popover: $showColorPicker,
+    selection: $selectedColor,
+    controlSize: $buttonSize
+)
+```
+
+**Available control sizes:** `.mini`, `.small`, `.regular`, `.large`, `.extraLarge`
+
 ### AlphaSlider
 
 ```swift
