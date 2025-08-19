@@ -58,7 +58,7 @@ public struct ColorSelectorButton: View {
             }
             .frame(maxHeight: .infinity)
         })
-        .frame(width: controlSize.colorButton.width, height: controlSize.colorButton.height)
+        .frame(width: controlSize.colorButton.width)
         .controlSize(controlSize)
     }
 }

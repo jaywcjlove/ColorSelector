@@ -130,8 +130,8 @@ extension ControlSize {
     var colorButton: CGSize {
         switch self {
         case .extraLarge: .init(width: 44, height: 28)
-        case .large: .init(width: 44, height: 28)
-        case .small: .init(width: 30, height: 12)
+        case .large: .init(width: 44, height: 23)
+        case .small: .init(width: 30, height: 14)
         case .mini: .init(width: 24, height: 12)
         default: .init(width: 34, height: 28)
         }
@@ -177,35 +177,45 @@ extension ControlSize {
         .frame(width: 210)
         .padding()
     HStack {
-        Button("Button Size", action: {}).controlSize(.extraLarge)
+        Button("Button extraLarge Size", action: {}).controlSize(.extraLarge)
+        Spacer()
         ColorSelector(selection: $color)
             .showsAlpha(false)
             .controlSize(.extraLarge)
     }
+    .frame(width: 210)
     HStack {
-        Button("Button Size", action: {}).controlSize(.large)
+        Button("Button large Size", action: {}).controlSize(.large)
+        Spacer()
         ColorSelector(selection: $color)
             .showsAlpha(false)
             .controlSize(.large)
     }
+    .frame(width: 210)
     HStack {
-        Button("Button Size", action: {}).controlSize(.regular)
+        Button("Button regular Size", action: {}).controlSize(.regular)
+        Spacer()
         ColorSelector(selection: $color)
             .showsAlpha(false)
             .controlSize(.regular)
     }
+    .frame(width: 210)
     HStack {
-        Button("Button Size", action: {}).controlSize(.small)
+        Button("Button small Size", action: {}).controlSize(.small)
+        Spacer()
         ColorSelector(selection: $color)
             .showsAlpha(false)
             .controlSize(.small)
     }
+    .frame(width: 210)
     HStack {
-        Button("Button Size", action: {}).controlSize(.mini)
+        Button("Button mini Size", action: {}).controlSize(.mini)
+        Spacer()
         ColorSelector(selection: $color)
             .showsAlpha(false)
             .controlSize(.mini)
     }
+    .frame(width: 210)
     ColorSelector(selection: $colorClear, arrowEdge: .top).padding()
     ColorSelector(nsColor: $nsColor, arrowEdge: .top).padding()
     HStack {
