@@ -6,7 +6,7 @@
 //
 
 import AppKit
-import SwiftUICore
+import SwiftUI
 
 extension Color {
     var toNSColor: NSColor? {
