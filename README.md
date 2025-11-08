@@ -139,6 +139,23 @@ ColorSelector(selection: $color)
     .controlSize(.regular)
 ```
 
+Set panel size
+
+```swift
+ColorSelector(selection: $color)
+    .pickerSize(.constant(.init(width: 180, height: 280)))
+```
+
+Add content to the bottom of the panel
+
+```swift
+ColorSelector(selection: $color, footer: {
+    Text("Hello World")
+}) {
+    Text("Color Picker Footer")
+}
+```
+
 ### ColorSelector Modifier
 
 The `colorSelectorPopover` modifier provides an easy way to add color picker functionality to any view. The modifier attaches a popover that shows when triggered externally.

@@ -24,7 +24,9 @@ public struct ColorSampler: View {
         Button(action: {
             NSColorSampler().show(selectionHandler: { color in
                 if let color {
-                    onColorSampler?(color)
+                    DispatchQueue.main.async {
+                        onColorSampler?(color)
+                    }
                 }
             })
         }, label: {

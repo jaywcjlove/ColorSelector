@@ -3,15 +3,21 @@
 
 import SwiftUI
 
-public extension ColorSelector where Title == EmptyView {
+// 简化版本：无自定义 label 和 footer
+public extension ColorSelector where Title == EmptyView, Footer == EmptyView {
     init(_ title: LocalizedStringKey? = nil, selection: Binding<Color?>, arrowEdge: Edge? = nil) {
         self.title = title
         self.arrowEdge = arrowEdge
+        self.label = nil
+        self.footer = nil
         self._selection = selection
     }
+    
     init(_ title: LocalizedStringKey? = nil, nsColor: Binding<NSColor?>, arrowEdge: Edge? = nil) {
         self.title = title
         self.arrowEdge = arrowEdge
+        self.label = nil
+        self.footer = nil
         self._selection = Binding<Color?> {
             if let nsColor = nsColor.wrappedValue {
                 return Color(nsColor: nsColor)
@@ -24,11 +30,31 @@ public extension ColorSelector where Title == EmptyView {
     }
 }
 
-public extension ColorSelector {
-    init(_ title: LocalizedStringKey? = nil, nsColor: Binding<NSColor?>, arrowEdge: Edge? = nil, label: (() -> Title)? = nil) {
+// 带有尾随闭包作为 label 的初始化器（Footer 为 EmptyView）
+public extension ColorSelector where Footer == EmptyView {
+    init(
+        _ title: LocalizedStringKey? = nil,
+        selection: Binding<Color?>,
+        arrowEdge: Edge? = nil,
+        @ViewBuilder content: @escaping () -> Title
+    ) {
         self.title = title
         self.arrowEdge = arrowEdge
-        self.label = label?()
+        self.label = content()
+        self.footer = nil
+        self._selection = selection
+    }
+    
+    init(
+        _ title: LocalizedStringKey? = nil,
+        nsColor: Binding<NSColor?>,
+        arrowEdge: Edge? = nil,
+        @ViewBuilder content: @escaping () -> Title
+    ) {
+        self.title = title
+        self.arrowEdge = arrowEdge
+        self.label = content()
+        self.footer = nil
         self._selection = Binding<Color?> {
             if let nsColor = nsColor.wrappedValue {
                 return Color(nsColor: nsColor)
@@ -41,16 +67,25 @@ public extension ColorSelector {
     }
 }
 
-public struct ColorSelector<Title>: View where Title : View {
-    @ObservedObject var viewModel: SketchViewModel = .init()
+public struct ColorSelector<Title: View, Footer: View>: View {
+    @ObservedObject var vm: SketchViewModel = .init()
     @Environment(\.pointSize) private var pointSize
     @Binding var selection: Color?
     @State private var popover: Bool = false
     var title: LocalizedStringKey?
     var arrowEdge: Edge? = nil
     var label: Title?
-    public init(_ title: LocalizedStringKey? = nil, selection: Binding<Color?>, arrowEdge: Edge? = nil, label: (() -> Title)? = nil) {
+    var footer: Footer?
+    public init(
+        _ title: LocalizedStringKey? = nil,
+        selection: Binding<Color?>,
+        arrowEdge: Edge? = nil,
+        footer: (() -> Footer)? = nil,
+        label: (() -> Title)? = nil,
+    ) {
+        self.title = title
         self.label = label?()
+        self.footer = footer?()
         self.arrowEdge = arrowEdge
         self._selection = selection
     }
@@ -72,7 +107,7 @@ public struct ColorSelector<Title>: View where Title : View {
             ColorSelectorButton(
                 popover: $popover,
                 selection: $selection,
-                controlSize: $viewModel.controlSize
+                controlSize: $vm.controlSize
             )
             .popover(isPresented: $popover, arrowEdge: arrowEdge) {
                 ZStack {
@@ -82,8 +117,10 @@ public struct ColorSelector<Title>: View where Title : View {
                         saturation: $saturation,
                         brightness: $brightness,
                         alpha: $alpha
-                    )
-                    .showsAlpha($viewModel.showsAlpha)
+                    ) {
+                        footer
+                    }
+                    .showsAlpha($vm.showsAlpha)
                     .onChange(of: hue, initial: false, { old, val in
                         changeColor()
                     })
@@ -97,7 +134,7 @@ public struct ColorSelector<Title>: View where Title : View {
                         changeColor()
                     })
                 }
-                .frame(width: 180, height: 250)
+                .frame(width: vm.size.width, height: vm.size.height)
                 .onAppear() {
                     let selection = selection ?? Color.clear
                     hue = selection.hue
@@ -113,15 +150,19 @@ public struct ColorSelector<Title>: View where Title : View {
     }
     
     public func showsAlpha(_ value: Bool) -> ColorSelector {
-        viewModel.showsAlpha = value
+        vm.showsAlpha = value
         return self as ColorSelector
     }
     public func showsAlpha(_ value: Binding<Bool>) -> ColorSelector {
-        viewModel.showsAlpha = value.wrappedValue
+        vm.showsAlpha = value.wrappedValue
+        return self as ColorSelector
+    }
+    public func pickerSize(_ value: Binding<CGSize>) -> ColorSelector {
+        vm.size = value.wrappedValue
         return self as ColorSelector
     }
     public func controlSize(_ value: ControlSize) -> ColorSelector {
-        viewModel.controlSize = value
+        vm.controlSize = value
         return self as ColorSelector
     }
 }
@@ -178,6 +219,13 @@ extension ControlSize {
     ColorSelector(nsColor: $nsColor) {
         Text("Color Picker")
     }
+    .frame(width: 210)
+    ColorSelector(selection: $color, footer: {
+        Text("Hello World")
+    }) {
+        Text("Color Picker Footer")
+    }
+    .pickerSize(.constant(.init(width: 180, height: 280)))
     .frame(width: 210)
     ColorSelector(selection: $color) {
         Text("Color Picker")

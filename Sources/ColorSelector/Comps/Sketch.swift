@@ -8,27 +8,46 @@
 import SwiftUI
 
 class SketchViewModel: ObservableObject {
+    @Published var size: CGSize = .init(width: 180, height: 250)
     @Published var showsAlpha: Bool = true
     @Published var controlSize: ControlSize = .regular
 }
 
-public struct Sketch: View {
+public extension Sketch where Footer == EmptyView {
+    init(
+        hue: Binding<CGFloat>,
+        saturation: Binding<CGFloat>,
+        brightness: Binding<CGFloat>,
+        alpha: Binding<CGFloat>
+    ) {
+        self._hue = hue
+        self._saturation = saturation
+        self._brightness = brightness
+        self._alpha = alpha
+        self.footer = nil
+    }
+}
+
+public struct Sketch<Footer: View>: View {
     @ObservedObject var viewModel: SketchViewModel = .init()
     @Environment(\.pointSize) private var pointSize
     @Binding var hue: CGFloat // 固定的色相 (0.0 到 1.0)
     @Binding var saturation: CGFloat // 饱和度 (0.0 到 1.0)
     @Binding var brightness: CGFloat // 亮度 (0.0 到 1.0)
     @Binding var alpha: CGFloat
+    var footer: Footer?
     public init(
         hue: Binding<CGFloat>,
         saturation: Binding<CGFloat>,
         brightness: Binding<CGFloat>,
         alpha: Binding<CGFloat>,
+        footer: (() -> Footer)? = nil,
     ) {
         self._hue = hue
         self._saturation = saturation
         self._brightness = brightness
         self._alpha = alpha
+        self.footer = footer?()
     }
     public var body: some View {
         VStack(spacing: 10) {
@@ -83,6 +102,7 @@ public struct Sketch: View {
                 brightness = value.brightnessComponent
                 alpha = value.alphaComponent
             }
+            footer
         }
         .padding(12)
     }
@@ -110,8 +130,10 @@ public struct Sketch: View {
             saturation: $saturation,
             brightness: $brightness,
             alpha: $alpha
-        )
-        .frame(width: 180, height: 230)
+        ) {
+            Text("Footer 2")
+        }
+        .frame(width: 180, height: 280)
         .environment(\.cornerSize, 3)
         Sketch(
             hue: $hue,
