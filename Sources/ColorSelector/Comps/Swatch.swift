@@ -16,6 +16,9 @@ public let defaultSwatchColors: [NSColor] = [
     NSColor(hue: 0.547, saturation: 0.800, brightness: 1.000, alpha: 1.0),
     NSColor(hue: 0.573, saturation: 0.984, brightness: 1.000, alpha: 1.0),
     NSColor(hue: 0.703, saturation: 0.788, brightness: 1.000, alpha: 1.0),
+]
+
+public let defaultSwatchColorsRow2: [NSColor] = [
     NSColor(hue: 0.797, saturation: 0.862, brightness: 0.878, alpha: 1.0),
     NSColor(hue: 0.597, saturation: 0.099, brightness: 0.475, alpha: 1.0),
     NSColor(hue: 0, saturation: 0, brightness: 0, alpha: 0.1),

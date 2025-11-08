@@ -129,30 +129,41 @@ public struct ColorSelector<Title>: View where Title : View {
 extension ControlSize {
     var colorButton: CGSize {
         switch self {
-        case .extraLarge: .init(width: 44, height: 28)
-        case .large: .init(width: 44, height: 23)
-        case .small: .init(width: 30, height: 14)
-        case .mini: .init(width: 24, height: 12)
+        case .extraLarge: .init(width: 33, height: 18)
+        case .large: .init(width: 26, height: 18)
+        case .regular: .init(width: 24, height: 16)
+        case .small: .init(width: 21, height: 14)
+        case .mini: .init(width: 18, height: 12)
         default: .init(width: 34, height: 28)
+        }
+    }
+    var cornerRadius: CGFloat {
+        switch self {
+        case .extraLarge: 24
+        case .large: 12
+        case .regular: 4
+        case .small: 4
+        case .mini: 4
+        default: 4
         }
     }
     var horizontal: CGFloat {
         switch self {
-        case .extraLarge: -4
-        case .large: -4
-        case .regular: -5
-        case .small: -4
-        case .mini: -3
+        case .extraLarge: -10
+        case .large: -6
+        case .regular: -8
+        case .small: -6
+        case .mini: -4
         default: -4
         }
     }
     var vertical: CGFloat {
         switch self {
-        case .extraLarge: 2
-        case .large: 2
-        case .regular: 2
+        case .extraLarge: -4
+        case .large: -1
+        case .regular: 0
         case .small: 1
-        case .mini: 1
+        case .mini: 2
         default: 1
         }
     }

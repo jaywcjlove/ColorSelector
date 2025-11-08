@@ -26,10 +26,10 @@ public struct ColorSelectorButton: View {
         }, label: {
             ZStack {
                 if let selection, selection != .clear {
-                    RoundedRectangle(cornerRadius: 2, style: .continuous)
+                    RoundedRectangle(cornerRadius: controlSize.cornerRadius, style: .continuous)
                         .fill(selection)
                         .overlay(
-                            RoundedRectangle(cornerRadius: 2.5, style: .continuous).stroke(lineWidth: 1).opacity(0.25)
+                            RoundedRectangle(cornerRadius: controlSize.cornerRadius, style: .continuous).stroke(lineWidth: 1).opacity(0.25)
                         )
                         .background(
                                 CheckerboardBackground(squareSize: 5)
@@ -39,11 +39,11 @@ public struct ColorSelectorButton: View {
                         .padding(.horizontal, controlSize.horizontal)
                         .padding(.vertical, controlSize.vertical)
                 } else {
-                    RoundedRectangle(cornerRadius: 2, style: .continuous)
+                    RoundedRectangle(cornerRadius: controlSize.cornerRadius, style: .continuous)
                         .fill(.white)
                         .overlay(
                             ZStack {
-                                RoundedRectangle(cornerRadius: 2.5, style: .continuous)
+                                RoundedRectangle(cornerRadius: controlSize.cornerRadius, style: .continuous)
                                     .stroke(lineWidth: 1) .opacity(0.25)
                                 Rectangle()
                                     .fill(.red)
@@ -57,8 +57,9 @@ public struct ColorSelectorButton: View {
                 }
             }
             .frame(maxHeight: .infinity)
+            .frame(width: controlSize.colorButton.width, height: controlSize.colorButton.height)
         })
-        .frame(width: controlSize.colorButton.width)
+        .buttonStyle(.automatic)
         .controlSize(controlSize)
     }
 }

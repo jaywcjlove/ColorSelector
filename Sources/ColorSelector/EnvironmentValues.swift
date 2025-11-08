@@ -10,7 +10,7 @@
 import SwiftUI
 
 private struct SwatchColorsKey: EnvironmentKey {
-    static let defaultValue: [NSColor] = defaultSwatchColors
+    static let defaultValue: [NSColor] = defaultSwatchColors + defaultSwatchColorsRow2
 }
 extension EnvironmentValues {
     public var swatchColors: [NSColor] {
