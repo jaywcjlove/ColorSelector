@@ -172,9 +172,9 @@ extension ControlSize {
         switch self {
         case .extraLarge: .init(width: 33, height: 18)
         case .large: .init(width: 26, height: 18)
-        case .regular: .init(width: 24, height: 16)
-        case .small: .init(width: 21, height: 14)
-        case .mini: .init(width: 18, height: 12)
+        case .regular: .init(width: 16, height: 16)
+        case .small: .init(width: 16, height: 14)
+        case .mini: .init(width: 14, height: 12)
         default: .init(width: 34, height: 28)
         }
     }
