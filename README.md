@@ -65,6 +65,17 @@ struct ContentView: View {
         ColorSelector(selection: $color) {
             Text("Color Picker")
         }
+        ColorSelector(selection: $color, footer: {
+            Text("Hello World")
+        })
+        ColorSelector(selection: $color, footer: {
+            Text("Hello World")
+        }) {
+            Text("Color Picker Footer")
+        }
+        ColorSelector(nsColor: $nsColor, footer: {
+            Text("Hello World")
+        })
     }
 }
 ```

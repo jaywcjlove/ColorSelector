@@ -263,6 +263,12 @@ extension ControlSize {
     .pickerSize(.constant(.init(width: 180, height: 280)))
     .frame(width: 210)
     
+    ColorSelector(nsColor: $nsColor, footer: {
+        Text("Hello World")
+    })
+    .pickerSize(.constant(.init(width: 180, height: 280)))
+    .frame(width: 210)
+    
     ColorSelector(selection: $color, footer: {
         Text("Hello World")
     }) {
