@@ -67,6 +67,42 @@ public extension ColorSelector where Footer == EmptyView {
     }
 }
 
+// 带有尾随闭包作为 label 的初始化器（Title 为 EmptyView）
+public extension ColorSelector where Title == EmptyView {
+    init(
+        _ title: LocalizedStringKey? = nil,
+        selection: Binding<Color?>,
+        arrowEdge: Edge? = nil,
+        footer: (() -> Footer)? = nil
+    ) {
+        self.title = title
+        self.label = nil
+        self.footer = footer?()
+        self.arrowEdge = arrowEdge
+        self._selection = selection
+    }
+    init(
+        _ title: LocalizedStringKey? = nil,
+        nsColor: Binding<NSColor?>,
+        arrowEdge: Edge? = nil,
+        footer: (() -> Footer)? = nil
+    ) {
+        self.title = title
+        self.label = nil
+        self.footer = footer?()
+        self.arrowEdge = arrowEdge
+        self._selection = Binding<Color?> {
+            if let nsColor = nsColor.wrappedValue {
+                return Color(nsColor: nsColor)
+            } else {
+                return nil
+            }
+        } set: { newValue in
+            nsColor.wrappedValue = newValue?.toNSColor
+        }
+    }
+}
+
 public struct ColorSelector<Title: View, Footer: View>: View {
     @ObservedObject var vm: SketchViewModel = .init()
     @Environment(\.pointSize) private var pointSize
@@ -220,6 +256,13 @@ extension ControlSize {
         Text("Color Picker")
     }
     .frame(width: 210)
+    
+    ColorSelector(selection: $color, footer: {
+        Text("Hello World")
+    })
+    .pickerSize(.constant(.init(width: 180, height: 280)))
+    .frame(width: 210)
+    
     ColorSelector(selection: $color, footer: {
         Text("Hello World")
     }) {
