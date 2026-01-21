@@ -5,36 +5,40 @@
 //  Created by wong on 4/18/25.
 //
 
-import AppKit
 import SwiftUI
 
 extension Color {
     var toNSColor: NSColor? {
-        guard let cgColor = self.cgColor else { return nil }
-        return NSColor(cgColor: cgColor)?.usingColorSpace(.sRGB)
+         if let cgColor = self.cgColor {
+             return NSColor(cgColor: cgColor)
+         }
+         return NSColor(self)
     }
     var alpha: CGFloat {
-        let nsColor = self.toNSColor
+        guard let nsColor = toNSColor else { return 1 }
         var value: CGFloat = 1
-        nsColor?.getHue(nil, saturation: nil, brightness: nil, alpha: &value)
+        nsColor.usingColorSpace(.sRGB)?.getHue(nil, saturation: nil, brightness: nil, alpha: &value)
         return value
     }
+    
     var hue: CGFloat {
-        let nsColor = self.toNSColor
+        guard let nsColor = toNSColor else { return 0 }
         var value: CGFloat = 0
-        nsColor?.getHue(&value, saturation: nil, brightness: nil, alpha: nil)
+        nsColor.usingColorSpace(.sRGB)?.getHue(&value, saturation: nil, brightness: nil, alpha: nil)
         return value
     }
+    
     var saturation: CGFloat {
-        let nsColor = self.toNSColor
+        guard let nsColor = toNSColor else { return 0 }
         var value: CGFloat = 0
-        nsColor?.getHue(nil, saturation: &value, brightness: nil, alpha: nil)
+        nsColor.usingColorSpace(.sRGB)?.getHue(nil, saturation: &value, brightness: nil, alpha: nil)
         return value
     }
+    
     var brightness: CGFloat {
-        let nsColor = self.toNSColor
+        guard let nsColor = toNSColor else { return 0 }
         var value: CGFloat = 0
-        nsColor?.getHue(nil, saturation: nil, brightness: &value, alpha: nil)
+        nsColor.usingColorSpace(.sRGB)?.getHue(nil, saturation: nil, brightness: &value, alpha: nil)
         return value
     }
     func contrastingColor(lightColor: NSColor = .white, darkColor: NSColor = .black, threshold: CGFloat = 0.5) -> Color? {

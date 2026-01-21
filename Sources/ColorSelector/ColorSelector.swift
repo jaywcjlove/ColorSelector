@@ -248,6 +248,7 @@ extension ControlSize {
 
 
 #Preview {
+    @Previewable @State var showCP: Bool = false
     @Previewable @State var color: Color? = Color.blue
     @Previewable @State var colorClear: Color? = .clear
     @Previewable @State var nsColor: NSColor? = NSColor.red
@@ -333,4 +334,20 @@ extension ControlSize {
         color.frame(width: 60, height: 30)
     }
     .padding(.bottom)
+    HStack {
+        Button(action: {
+            showCP.toggle()
+            //                selected = color
+            //                settings.color[settings.toolbar] = NSColor(color)
+        }, label: {
+            RoundedRectangle(cornerRadius: 4)
+                .fill(color ?? .blue)
+                .frame(width: 15, height: 15)
+        })
+        .colorSelectorPopover(
+            selection: $color,
+            isPresented: $showCP
+        )
+    }
+    .frame(width: 210)
 }

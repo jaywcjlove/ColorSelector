@@ -48,7 +48,6 @@ public struct ColorSelectorModifier: ViewModifier {
         self.arrowEdge = arrowEdge
         self.showsAlpha = showsAlpha
     }
-    
     public func body(content: Content) -> some View {
         content
             .popover(isPresented: $isPresented, arrowEdge: arrowEdge) {
@@ -146,4 +145,27 @@ public extension View {
             showsAlpha: showsAlpha
         ))
     }
+}
+
+
+#Preview {
+    @Previewable @State var color: Color? = Color.blue
+    @Previewable @State var showColorPicker = false
+    
+    VStack {
+        Button(action: {
+            showColorPicker.toggle()
+//                selected = color
+//                settings.color[settings.toolbar] = NSColor(color)
+        }, label: {
+            RoundedRectangle(cornerRadius: 4)
+                .fill(color ?? .blue)
+                .frame(width: 15, height: 15)
+        })
+        .colorSelectorPopover(
+            selection: $color,
+            isPresented: $showColorPicker
+        )
+    }
+    .frame(width: 210)
 }
