@@ -14,7 +14,7 @@ jobs:
 
       - name: Extract version from tag
         id: extract_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
 
       - name: Create Tag
