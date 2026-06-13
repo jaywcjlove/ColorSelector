@@ -42,7 +42,7 @@ public struct Swatch: View {
         spacing: CGFloat = 4,
         onColorSelected: ((NSColor) -> Void)? = nil
     ) {
-        self.width = width
+        self._width = State(initialValue: 0)
         self.nsColor = nsColor
         self.size = size
         self.spacing = spacing
